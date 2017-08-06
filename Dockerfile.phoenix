@@ -1,7 +1,8 @@
 FROM ianluites/elixir:${ELIXIR_VERSION}-${ERLANG_VERSION}
 
 # Phoenix specific dependencies
-RUN apk add --no-cache nodejs yarn
+RUN apk add --no-cache nodejs yarn && \
+    mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez
 
 # No Sass support on Alpine 3.6
 COPY ./lib/binding.node /usr/lib/binding.node
