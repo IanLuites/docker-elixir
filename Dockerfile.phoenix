@@ -1,0 +1,8 @@
+FROM ianluites/elixir:${ELIXIR_VERSION}-${ERLANG_VERSION}
+
+# Phoenix specific dependencies
+RUN apk add --no-cache nodejs yarn
+
+# No Sass support on Alpine 3.6
+COPY ./lib/binding.node /usr/lib/binding.node
+ENV SASS_BINARY_PATH="/usr/lib/binding.node"
