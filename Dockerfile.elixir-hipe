@@ -1,0 +1,16 @@
+FROM ianluites/erlang:${ERLANG_VERSION}
+
+MAINTAINER Ian Luites <ian@luites.com>
+
+ENV ERL_COMPILER_OPTIONS="[native,{hipe, [o3]}]"
+
+RUN \
+    mkdir /tmp/elixir-build && cd /tmp/elixir-build && \
+    apk --no-cache --update upgrade && \
+    apk add --no-cache --update --virtual .elixir-build make git && \
+    git clone -b v${ELIXIR_VERSION} --single-branch --depth 1 https://github.com/elixir-lang/elixir . && \
+    make && make install && \
+    mix local.hex --force && \
+    mix local.rebar --force && \
+    rm -rf /tmp/elixir-build && \
+    apk del .elixir-build
